@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <!-- TODO: Replace with your paper title and author names -->
+  <meta name="title" content="MarkCleaner: High-Fidelity Watermark Removal via Imperceptible Micro-Geometric Perturbation">
+  <meta name="description" content="MarkCleaner is a watermark removal framework that avoids semantic drift by using micro-geometric perturbations and 2D Gaussian Splatting.">
+  <meta name="keywords" content="Watermark Removal, 2D Gaussian Splatting, Semantic Watermarks, Micro-Geometric Perturbation">
+  <meta name="author" content="Xiaoxi Kong, Jieyu Yuan, Pengdi Chen, Yuanlin Zhang, Chongyi Li, Bin Li">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <!-- TODO: Replace with your institution or lab name -->
+  <meta property="og:site_name" content="INSTITUTION_OR_LAB_NAME">
+  <!-- TODO: Same as paper title above -->
+  <meta property="og:title" content="MarkCleaner: High-Fidelity Watermark Removal via Imperceptible Micro-Geometric Perturbation">
+  <meta property="og:description" content="MarkCleaner: High-Fidelity Watermark Removal via Imperceptible Micro-Geometric Perturbation">
+  <meta property="og:url" content="https://markcleaner.github.io/">
+  <meta property="og:image" content="static/images/teaser.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="PAPER_TITLE - Research Preview">
+  <meta property="article:published_time" content="2024-01-01T00:00:00.000Z">
+  <meta property="article:author" content="FIRST_AUTHOR_NAME">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="KEYWORD1">
+  <meta property="article:tag" content="KEYWORD2">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO: Replace with your lab/institution Twitter handle -->
+  <meta name="twitter:site" content="@YOUR_TWITTER_HANDLE">
+  <!-- TODO: Replace with first author's Twitter handle -->
+  <meta name="twitter:creator" content="@AUTHOR_TWITTER_HANDLE">
+  <!-- TODO: Same as paper title above -->
+  <meta name="twitter:title" content="PAPER_TITLE">
+  <!-- TODO: Same as description above -->
+  <meta name="twitter:description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
+  <!-- TODO: Same as social preview image above -->
+  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
+  <meta name="twitter:image:alt" content="PAPER_TITLE - Research Preview">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="PAPER_TITLE">
+  <meta name="citation_author" content="FIRST_AUTHOR_LAST, FIRST_AUTHOR_FIRST">
+  <meta name="citation_author" content="SECOND_AUTHOR_LAST, SECOND_AUTHOR_FIRST">
+  <meta name="citation_publication_date" content="2024">
+  <meta name="citation_conference_title" content="CONFERENCE_NAME">
+  <meta name="citation_pdf_url" content="https://YOUR_DOMAIN.com/static/pdfs/paper.pdf">
+  
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <title>MarkCleaner: High-Fidelity Watermark Removal via Imperceptible Micro-Geometric Perturbation</title>
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/icon2.png">
+  <link rel="apple-touch-icon" href="static/images/icon2.png">
+  
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "PAPER_TITLE",
+    "description": "BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "FIRST_AUTHOR_NAME",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "INSTITUTION_NAME"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "SECOND_AUTHOR_NAME",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "INSTITUTION_NAME"
+        }
+      }
+    ],
+    "datePublished": "2024-01-01",
+    "publisher": {
+      "@type": "Organization",
+      "name": "CONFERENCE_OR_JOURNAL_NAME"
+    },
+    "url": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE",
+    "image": "https://YOUR_DOMAIN.com/static/images/social_preview.png",
+    "keywords": ["KEYWORD1", "KEYWORD2", "KEYWORD3", "machine learning", "computer vision"],
+    "abstract": "FULL_ABSTRACT_TEXT_HERE",
+    "citation": "BIBTEX_CITATION_HERE",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "mainEntity": {
+      "@type": "WebPage",
+      "@id": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE"
+    },
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "RESEARCH_AREA_1"
+      },
+      {
+        "@type": "Thing", 
+        "name": "RESEARCH_AREA_2"
+      }
+    ]
+  }
+  </script>
+  
+  <!-- Website/Organization Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "INSTITUTION_OR_LAB_NAME",
+    "url": "https://YOUR_INSTITUTION_WEBSITE.com",
+    "logo": "https://YOUR_DOMAIN.com/static/images/favicon.ico",
+    "sameAs": [
+      "https://twitter.com/YOUR_TWITTER_HANDLE",
+      "https://github.com/YOUR_GITHUB_USERNAME"
+    ]
+  }
+  </script>
+</head>
+<body>
+
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-3 publication-title" style="display: flex; align-items: center; justify-content: center; gap: 1rem; line-height: 1.2;">
+              <img src="static/images/icon2.png" alt="Logo" style="height: 2.5rem; border-radius: 8px; flex-shrink: 0;">
+              <span>MarkCleaner: High-Fidelity Watermark Removal via <br> Imperceptible Micro-Geometric Perturbation</span>
+            </h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://jieyu-yuan.github.io/" target="_blank">Xiaoxi Kong</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://jieyu-yuan.github.io/" target="_blank">Jieyu Yuan</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="#" target="_blank">Pengdi Chen</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="#" target="_blank">Yuanlin Zhang</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="https://li-chongyi.github.io/" target="_blank">Chongyi Li</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="https://ceie.szu.edu.cn/info/1017/1064.htm" target="_blank">Bin Li</a><sup>1*†</sup>
+              </span>
+            </div>
+
+            <div class="affiliation-block">
+              <span class="author-block"><sup>1</sup>Shenzhen University, <sup>2</sup>Nankai University</span>
+            </div>
+            
+            <div class="eql-cntrb mt-2">
+              <small><sup>*</sup>Corresponding Author, <sup>†</sup>Project Lead</small>
+            </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- TODO: Update with your arXiv paper ID -->
+                      <span class="link-block">
+                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                      </a>
+                    </span>
+
+                    <!-- TODO: Add your supplementary material PDF or remove this section -->
+                    <span class="link-block">
+                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Supplementary</span>
+                    </a>
+                  </span>
+
+                  <!-- TODO: Replace with your GitHub repository URL -->
+                  <span class="link-block">
+                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+                <!-- TODO: Update with your arXiv paper ID -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser image-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <!-- TL;DR -->
+      <div class="notification is-info is-light has-text-centered mb-6" style="font-size: 1.1rem; border-left: 5px solid #209cee;">
+        <strong>TL;DR:</strong> MarkCleaner achieves high-fidelity watermark removal by exploiting the <strong>geometric vulnerability</strong> of semantic watermarks via <strong>micro-geometric perturbations</strong> and <strong>2D Gaussian Splatting</strong>.
+      </div>
+      <img src="static/images/teaser.png" alt="MarkCleaner Teaser" />
+      <div class="subtitle mt-4" style="font-size: 1.2rem; font-weight: 500; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+        <div class="has-text-centered mb-2">MarkCleaner removes watermarks without compromising visual fidelity.</div>
+        <div style="text-align: left; display: inline-block; width: 100%;">
+          <strong>(a)</strong> Trade-off between fidelity and erasure in existing methods.<br>
+          <strong>(b)</strong> Our MarkCleaner offers a unified solution for both visible and invisible watermarks via mask-guided encoding and geometric perturbation.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End teaser image -->
+
+<!-- Paper abstract -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="section-card">
+      <h2 class="title is-3">Abstract</h2>
+      <div class="abstract-container">
+        <div class="abstract-content">
+          <p>
+            Semantic watermarks exhibit strong robustness against conventional image-space attacks. In this work, we show that such robustness does not survive under micro-geometric perturbations: spatial displacements can remove watermarks by breaking the phase alignment. Motivated by this observation, we introduce <strong>MarkCleaner</strong>, a watermark removal framework that avoids semantic drift caused by regeneration-based watermark removal.
+          </p>
+          <p>
+            Specifically, MarkCleaner is trained with micro-geometry-perturbed supervision, which encourages the model to separate semantic content from strict spatial alignment and enables robust reconstruction under subtle geometric displacements. The framework adopts a mask-guided encoder that learns explicit spatial representations and a 2D Gaussian Splatting–based decoder that explicitly parameterizes geometric perturbations while preserving semantic content. Extensive experiments demonstrate that MarkCleaner achieves superior performance in both watermark removal effectiveness and visual fidelity, while enabling efficient real-time inference.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- Preliminary Analysis -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="section-card">
+      <h2 class="title is-3">Preliminary Analysis</h2>
+      <div class="content has-text-justified">
+        <p>
+          We identify that semantic watermarks are fundamentally sensitive to geometric perturbation. Geometric transformations manifest as <strong>phase shifts</strong> in the frequency domain, which disrupt the precise phase alignment used by watermark detectors.
+        </p>
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-one-third">
+            <div class="field">
+              <img src="static/images/preliminary_no_w.png" alt="Clean" style="width: 100%; border-radius: 8px;"/>
+              <p class="caption-text mt-2">(a) Clean</p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="field">
+              <img src="static/images/preliminary_w.png" alt="Watermarked" style="width: 100%; border-radius: 8px;"/>
+              <p class="caption-text mt-2">(b) Watermarked</p>
+            </div>
+          </div>
+          <div class="column is-one-third">
+            <div class="field">
+              <img src="static/images/preliminary_w_shift.png" alt="Transformed" style="width: 100%; border-radius: 8px;"/>
+              <p class="caption-text mt-2">(c) Transformed</p>
+            </div>
+          </div>
+        </div>
+        <p class="mt-4">
+          Geometric transformation disrupts watermark-induced phase ripples while preserving amplitude structure, indicating watermark invalidation arises from phase modulation rather than content alteration.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Methodology -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="section-card">
+      <h2 class="title is-3">Methodology</h2>
+      <div class="content has-text-justified">
+        <div class="has-text-centered mb-5">
+          <img src="static/images/pipeline.png" alt="MarkCleaner Pipeline" style="max-width: 100%; border-radius: 12px;"/>
+        </div>
+        <p>
+          MarkCleaner adopts a UNet-based encoder-decoder architecture. The core principle is to train the network to learn <strong>micro-geometric perturbations</strong> while maintaining visual consistency. 
+        </p>
+        <ul>
+          <li><strong>Mask-Guided Encoding:</strong> Disrupts potential watermark patterns in both frequency and spatial domains using dual-domain stochastic masking.</li>
+          <li><strong>2D Gaussian Splatting (2DGS) Decoder:</strong> Explicitly parameterizes geometric perturbations using 2D Gaussian primitives to break spatial alignment while preserving content.</li>
+          <li><strong>Content Alignment:</strong> Incorporates self-supervised visual features (DINOv2) to ensure semantic consistency under spatial displacement.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Results Table -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="section-card">
+      <h2 class="title is-3">Quantitative Comparison</h2>
+      <div class="content">
+        <p>
+          We evaluate MarkCleaner against 14 representative watermark removal approaches across 12 watermarking schemes. Results are shown as <strong>TPR@1%FPR / ACC</strong>. Lower values indicate more effective removal.
+        </p>
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th rowspan="2">Attack Type</th>
+                <th rowspan="2">DwtDct</th>
+                <th rowspan="2">SSL</th>
+                <th>Stega</th>
+                <th>Stable</th>
+                <th rowspan="2">VINE</th>
+                <th rowspan="2">WOFA</th>
+                <th>Gaussian</th>
+                <th>T2S</th>
+                <th>Tree</th>
+                <th rowspan="2">RingID</th>
+                <th rowspan="2">HSTR</th>
+                <th rowspan="2">HSQR</th>
+                <th style="background: var(--primary-color) !important; color: white !important;">mTPR(↓)</th>
+              </tr>
+              <tr>
+                <th>Stamp</th>
+                <th>Sign.</th>
+                <th>Shading</th>
+                <th>Mark</th>
+                <th>Ring</th>
+                <th style="background: var(--primary-color) !important; color: white !important;">mACC(↓)</th>
+              </tr>
+            </thead>
+          <tbody>
+              <tr><td>None</td><td>.800/.888</td><td>1.0/1.0</td><td>1.0/.999</td><td>1.0/.993</td><td>1.0/.999</td><td>.977/.832</td><td>1.0/1.0</td><td>1.0/1.0</td><td>.943/.970</td><td>1.0/1.0</td><td>1.0/1.0</td><td>1.0/1.0</td><td>.977/.473</td></tr>
+              <tr><td>JPEG</td><td>.003/.490</td><td>.243/.680</td><td>1.0/.997</td><td>.782/.695</td><td>1.0/.989</td><td>.040/.458</td><td>1.0/1.0</td><td>1.0/.998</td><td>.083/.945</td><td>1.0/1.0</td><td>.980/.988</td><td>1.0/1.0</td><td>.678/.353</td></tr>
+              <tr><td>Crop&Scale</td><td>.007/.521</td><td>.927/.875</td><td>.033/.554</td><td>.999/.978</td><td>.013/.505</td><td>.800/.631</td><td>.003/.501</td><td>.000/.501</td><td>.000/.842</td><td>.010/.582</td><td>.070/.597</td><td>.153/.702</td><td>.251/.154</td></tr>
+              <tr><td>Blur</td><td>.357/.682</td><td>.987/.981</td><td>1.0/1.0</td><td>.818/.817</td><td>1.0/.998</td><td>.693/.707</td><td>1.0/1.0</td><td>1.0/1.0</td><td>.593/.965</td><td>1.0/1.0</td><td>1.0/1.0</td><td>1.0/1.0</td><td>.871/.429</td></tr>
+              <tr><td>Noise</td><td>.000/.505</td><td>.010/.508</td><td>.987/.872</td><td>.000/.543</td><td>1.0/.901</td><td>.069/.439</td><td>1.0/.991</td><td>.987/.951</td><td>.000/.925</td><td>.993/1.0</td><td>.103/.578</td><td>.987/.990</td><td>.511/.267</td></tr>
+              <tr><td>Rotation</td><td>.000/.522</td><td>.973/.918</td><td>.000/.510</td><td>.998/.813</td><td>.010/.497</td><td>.987/.845</td><td>.007/.539</td><td>.000/.499</td><td>.000/.850</td><td>1.0/1.0</td><td>.103/.578</td><td>.060/.613</td><td>.251/.154</td></tr>
+              <tr><td>Translation</td><td>.003/.501</td><td>.980/.923</td><td>.255/.587</td><td>1.0/.991</td><td>.013/.504</td><td>.822/.963</td><td>.027/.568</td><td>.000/.501</td><td>.000/.888</td><td>.013/.484</td><td>.087/.585</td><td>.057/.563</td><td>.271/.172</td></tr>
+              <tr><td>VAE-B (ICLR, '18)</td><td>.000/.499</td><td>.760/.818</td><td>1.0/.999</td><td>.730/.680</td><td>1.0/.990</td><td>.157/.439</td><td>1.0/1.0</td><td>1.0/1.0</td><td>.190/.957</td><td>1.0/1.0</td><td>1.0/1.0</td><td>1.0/1.0</td><td>.686/.365</td></tr>
+              <tr><td>VAE-C (CVPR, '20)</td><td>.000/.496</td><td>.410/.720</td><td>1.0/.998</td><td>.582/.652</td><td>.997/.959</td><td>.173/.440</td><td>1.0/1.0</td><td>1.0/1.0</td><td>.123/.947</td><td>1.0/1.0</td><td>.990/.993</td><td>1.0/1.0</td><td>.606/.351</td></tr>
+              <tr><td>DA (ICLR, '24)</td><td>.000/.494</td><td>.003/.510</td><td>.043/.531</td><td>.625/.463</td><td>.450/.609</td><td>.477/.479</td><td>1.0/.987</td><td>.993/.939</td><td>.000/.880</td><td>.927/.996</td><td>.800/.828</td><td>1.0/.998</td><td>.526/.226</td></tr>
+              <tr><td>CtrlRegen+ ('25)</td><td>.003/.494</td><td>.030/.557</td><td>.197/.603</td><td>.023/.479</td><td>.833/.671</td><td>.110/.416</td><td>1.0/.999</td><td>1.0/.987</td><td>.001/.885</td><td>.980/.999</td><td>.437/.890</td><td>1.0/.998</td><td>.468/.248</td></tr>
+              <tr><td>UnMarker ('25)</td><td>.010/.538</td><td>.973/.918</td><td>.990/.946</td><td>.999/.981</td><td>.007/.502</td><td>.997/.917</td><td>1.0/1.0</td><td>.017/.502</td><td>.010/.948</td><td>.460/.939</td><td>.097/.693</td><td>.033/.575</td><td>.466/.288</td></tr>
+              <tr><td>IRA (CVPR, '25)</td><td>.000/.487</td><td>.680/.759</td><td>.990/.905</td><td>.625/.508</td><td>1.0/.924</td><td>.100/.418</td><td>1.0/1.0</td><td>1.0/1.0</td><td>.800/.975</td><td>1.0/1.0</td><td>.990/.995</td><td>1.0/1.0</td><td>.682/.331</td></tr>
+              <tr><td>NFPA (NeurIPS, '25)</td><td>.000/.500</td><td>.030/.565</td><td>.013/.481</td><td>.043/.494</td><td>.013/.502</td><td>.087/.387</td><td>.003/.514</td><td>.000/.499</td><td>.003/.913</td><td>.030/.672</td><td>.153/.645</td><td>.367/.795</td><td>.061/.154</td></tr>
+              <tr class="is-selected"><td><strong>Ours</strong></td><td><strong>.003/.500</strong></td><td><strong>.000/.504</strong></td><td><strong>.010/.488</strong></td><td><strong>.000/.446</strong></td><td><strong>.063/.554</strong></td><td><strong>.002/.494</strong></td><td><strong>.003/.554</strong></td><td><strong>.003/.500</strong></td><td><strong>.001/.795</strong></td><td><strong>.003/.802</strong></td><td><strong>.051/.630</strong></td><td><strong>.022/.766</strong></td><td><strong>.014/.094</strong></td></tr>
+            </tbody>
+        </table>
+      </div>
+      <p class="is-size-6 mt-2">
+        As demonstrated in the comprehensive evaluations above, <strong>MarkCleaner</strong> consistently achieves the best overall performance across all metrics and watermark types.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Qualitative Results -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="section-card">
+      <h2 class="title is-3">Qualitative Results</h2>
+      <div class="content has-text-justified">
+        <p>
+          Traditional pixel-space distortions severely degrade visual quality, while generation-based methods tend to remove watermarks at the cost of semantic drift. Our <strong>MarkCleaner</strong> achieves more effective watermark suppression with better visual fidelity.
+        </p>
+        <div class="has-text-centered mb-6">
+          <img src="static/images/result.png" alt="Qualitative Comparison" style="max-width: 100%; border-radius: 12px; box-shadow: var(--shadow-md);"/>
+          <p class="caption-text mt-3">Comparison across different removal strategies. MarkCleaner preserves fine details without semantic drift.</p>
+        </div>
+
+        <h3 class="title is-4">Additional Results (Appendix)</h3>
+        <p>We provide additional qualitative comparisons on various semantic watermarking schemes, including Tree-Ring, RingID, HSTR, and HSQR.</p>
+        
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <img src="static/images/treering_a.png" alt="Tree-Ring Results A"/>
+            <h2 class="subtitle has-text-centered mt-2" style="font-size: 1.1rem; font-weight: 600;">Tree-Ring Watermark Removal (A)</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/treering_b.png" alt="Tree-Ring Results B"/>
+            <h2 class="subtitle has-text-centered mt-2" style="font-size: 1.1rem; font-weight: 600;">Tree-Ring Watermark Removal (B)</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/ringid_a.png" alt="RingID Results A"/>
+            <h2 class="subtitle has-text-centered mt-2" style="font-size: 1.1rem; font-weight: 600;">RingID Watermark Removal (A)</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/ringid_b.png" alt="RingID Results B"/>
+            <h2 class="subtitle has-text-centered mt-2" style="font-size: 1.1rem; font-weight: 600;">RingID Watermark Removal (B)</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/hstr_a.png" alt="HSTR Results A"/>
+            <h2 class="subtitle has-text-centered mt-2" style="font-size: 1.1rem; font-weight: 600;">HSTR Watermark Removal (A)</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/hstr_b.png" alt="HSTR Results B"/>
+            <h2 class="subtitle has-text-centered mt-2" style="font-size: 1.1rem; font-weight: 600;">HSTR Watermark Removal (B)</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/hsqr_a.png" alt="HSQR Results A"/>
+            <h2 class="subtitle has-text-centered mt-2" style="font-size: 1.1rem; font-weight: 600;">HSQR Watermark Removal (A)</h2>
+          </div>
+          <div class="item">
+            <img src="static/images/hsqr_b.png" alt="HSQR Results B"/>
+            <h2 class="subtitle has-text-centered mt-2" style="font-size: 1.1rem; font-weight: 600;">HSQR Watermark Removal (B)</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ablation Study -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="section-card">
+      <h2 class="title is-3">Ablation Study</h2>
+      <div class="content has-text-justified">
+        <div class="has-text-centered mb-5">
+          <img src="static/images/ablation.png" alt="Ablation Study" style="max-width: 80%; border-radius: 12px;"/>
+          <p class="caption-text mt-3">Visualization of ablation studies. Red boxes highlight geometric subtle shifts, while Yellow boxes highlight structural preservation.</p>
+        </div>
+        <p>
+          We analyze the contribution of each component: <strong>Mask-Guided Encoder (ME)</strong>, <strong>Gaussian Rendering (GR)</strong>, <strong>Content Alignment (CA)</strong>, and <strong>Geometric Attacks (GA)</strong>.
+        </p>
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr><th>Module</th><th>TPR(↓)</th><th>FID(↓)</th><th>CLIP(↑)</th><th>LPIPS(↓)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>w/o ME</td><td>0.2467</td><td>145.145</td><td>0.3154</td><td>0.6846</td></tr>
+              <tr><td>w/o GR</td><td>0.1367</td><td>146.604</td><td>0.3163</td><td>0.6837</td></tr>
+              <tr><td>w/o CA</td><td>0.1567</td><td>149.416</td><td>0.2528</td><td>0.7064</td></tr>
+              <tr><td>w/o GA</td><td>1.0000</td><td><strong>131.487</strong></td><td>0.3324</td><td>0.6676</td></tr>
+              <tr class="is-selected"><td><strong>Full Model</strong></td><td><strong>0.0001</strong></td><td>133.196</td><td><strong>0.3705</strong></td><td><strong>0.6295</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+<!--BibTex citation -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop">
+    <div class="section-card">
+      <div class="bibtex-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-light); padding-bottom: 0.75rem; margin-bottom: 1.5rem;">
+        <h2 class="title is-3" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">BibTeX</h2>
+        <button class="copy-bibtex-btn button is-small is-rounded" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <span class="icon is-small">
+            <i class="fas fa-copy"></i>
+          </span>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <div class="content">
+        <pre id="bibtex-code" style="background: #f8fafc; border-radius: 8px; border: 1px solid var(--border-color); padding: 1.5rem;"><code>@article{kong2026markcleaner,
+  title={MarkCleaner: High-Fidelity Watermark Removal via Imperceptible Micro-Geometric Perturbation},
+  author={Kong, Xiaoxi and Yuan, Jieyu and Chen, Pengdi and Zhang, Yuanlin and Li, Chongyi and Li, Bin},
+  year={2026},
+  url={https://markcleaner.github.io/}
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+<!--End BibTex citation -->
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
