@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.so
+.DS_Store
+code/pretrained/*.pth
+checkpoints/*.pth
+outputs/
+runs/
+samples/
+wandb/
